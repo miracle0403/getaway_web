@@ -53,7 +53,7 @@ var options = {
 	database: "getaway"
 }
 
-var sessionStore = new MySQLStore(options); //|| new pgStore(options);
+var sessionStore = new MySQLStore(options);
   
 app.use(session({
   secret: 'keybaby',

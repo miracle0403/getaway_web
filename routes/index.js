@@ -52,7 +52,7 @@ router.get('/stock', authentificationMiddleware(), function(req, res, next) {
 	var title = "IG NIG. LTD."
 	var currentUser = req.session.passport.user.user_id;
 	isaRestrictedUser(currentUser)
-	db.query('SELECT * FROM all_users WHERE user_id = ?', [currentUser], function ( err, results, fields ){
+	db.query('SELECT * FROM get_away_users WHERE user_id = ?', [currentUser], function ( err, results, fields ){
 		if( err ) throw err;
 		if(results[0].user_type !== 'Administrator' || results[0].user_type !== 'Store Keeper'){
 			res.redirect('/404');
@@ -83,12 +83,12 @@ router.get('/add-user', authentificationMiddleware(), function(req, res, next) {
 	var title = "IG NIG. LTD."
 	var currentUser = req.session.passport.user.user_id;
 	isaRestrictedUser(currentUser)
-	db.query('SELECT * FROM all_users WHERE user_id = ?', [currentUser], function ( err, results, fields ){
+	db.query('SELECT * FROM get_away_users WHERE user_id = ?', [currentUser], function ( err, results, fields ){
 		if( err ) throw err;
 		if(results[0].user_type !== 'Administrator'){
 			res.redirect('/404');
 		}else{
-			res.render('request-product', { title: title, mess: message });
+			res.render('add-user', { title: title, mess: message });
 		}
 	});
 });
@@ -105,7 +105,7 @@ router.get('/request-product', authentificationMiddleware(), function(req, res, 
 	var title = "IG NIG. LTD."
 	var currentUser = req.session.passport.user.user_id;
 	isaRestrictedUser(currentUser)
-	db.query('SELECT * FROM all_users WHERE user_id = ?', [currentUser], function ( err, results, fields ){
+	db.query('SELECT * FROM get_away_users WHERE user_id = ?', [currentUser], function ( err, results, fields ){
 		if( err ) throw err;
 		if(results[0].user_type !== 'Administrator' || results[0].user_type !== 'Marketer'){
 			res.redirect('/404');
