@@ -1,0 +1,178 @@
+ {{> spagenav}}
+ 
+ <div class = "content">
+ <br> <br>
+ {{#if errors}}
+  {{#each errors}}
+  <div class="alert alert-danger">
+    {{this.msg}}
+  </div>
+  {{/each}}
+{{/if}}
+ <div class = "row">
+ 
+ 
+ <div class="col-md-4">
+ <div class="card card-user">
+				<div class="card-header">
+					<h5 class="card-title" id = "addstudent"> ADD STUDENT </h5>
+					
+				</div>
+				<div class="card-body">
+					<form action = "/addstudent" method = "POST">
+						{{#showErrors}}
+						{{#addstudenterror}}
+							<div id = "roleserror" class="alert alert-danger">
+								{{.}}
+							</div>
+						{{/addstudenterror}}
+						{{/showErrors}}
+						
+						{{#showSuccess}}
+						{{#addstudentsuccess}}
+							<div id = "rolessuccess" class="alert alert-success">
+								{{.}}
+							</div>
+						{{/addstudentsuccess}}
+						{{/showSuccess}}
+							
+								<label>Full Name</label>
+								<input type="text" name = "fullname" class="form-control" placeholder="Fullname"  required/>
+							
+							
+								<label>Reg ID</label>
+								<input type="text" name = "regid" class="form-control" placeholder="regid"  />
+							{{#if theclass}}
+							<label>Class</label>
+								<input type="text" name = "class_admitted" class="form-control" placeholder="class"  value = "{{theclass}}" readonly/>
+							{{/if}}
+							{{#if session}}
+							<label>Session</label>
+								<input type="text" name = "session" class="form-control" placeholder="session"  value = "{{session.session}}" readonly/>
+							{{/if}}
+							
+							
+								<small><button class = "btn btn-primary" id = "add-admin" type "submit">SUBMIT</button></small>
+						
+					</form>
+				</div>
+			</div>
+ </div>
+ 
+ 
+<div class="col-md-4">
+ <div class="card card-user">
+				<div class="card-header">
+					<h5 class="card-title" ID = "deletestudent"> DELETE STUDENT </h5>
+					
+				</div>
+				<div class="card-body">
+					<form action = "/deletestudent" method = "POST">
+						{{#showErrors}}
+						{{#delstudent}}
+							<div id = "roleserror" class="alert alert-danger">
+								{{.}}
+							</div>
+						{{/delstudent}}
+						{{/showErrors}}
+						
+						{{#showSuccess}}
+						{{#delsuccess}}
+							<div id = "rolessuccess" class="alert alert-success">
+								{{.}}
+							</div>
+						{{/delsuccess}}
+						{{/showSuccess}}
+							
+								<label>Full Name</label>
+								<input type="text" name = "fullname" class="form-control" placeholder="Fullname"  required/>
+							
+							
+								<label>Reg ID</label>
+								<input type="text" name = "regid" class="form-control" placeholder="regid"  />
+							{{#if theclass}}
+							<label>Class</label>
+								<input type="text" name = "class_admitted" class="form-control" placeholder="class"  value = "{{theclass}}" readonly/>
+							{{/if}}
+							{{#if session}}
+							<label>Session</label>
+								<input type="text" name = "session" class="form-control" placeholder="session"  value = "{{session.session}}" readonly/>
+							{{/if}}
+							
+							
+								<small><button class = "btn btn-primary" id = "add-admin" type "submit">SUBMIT</button></small>
+						
+					</form>
+				</div>
+			</div>
+ </div>
+ 
+ 
+ 
+ 
+ 
+ <div class="col-md-4">
+ <div class="card card-user">
+				<div class="card-header">
+					<h5 class="card-title" ID = "transferstudent"> TRANSFER STUDENT </h5>
+					
+				</div>
+				<div class="card-body">
+					<form action = "/transferstudent" method = "POST">
+						{{#showErrors}}
+						{{#transferstudenterror}}
+							<div id = "roleserror" class="alert alert-danger">
+								{{.}}
+							</div>
+						{{/transferstudenterror}}
+						{{/showErrors}}
+						
+						{{#showSuccess}}
+						{{#transferstudentsuccess}}
+							<div id = "rolessuccess" class="alert alert-success">
+								{{.}}
+							</div>
+						{{/transferstudentsuccess}}
+						{{/showSuccess}}
+							
+								<label>Full Name</label>
+								<input type="text" name = "fullname" class="form-control" placeholder="Fullname"  required/>
+							
+							
+								<label>Reg ID</label>
+								<input type="text" name = "regid" class="form-control" placeholder="regid"  required/>
+							
+							<label>Class</label>
+								<select name = "class_admitted" class="form-control">
+									{{#if theclasses}}
+									{{#each theclasses}}
+									<option>{{theclass}}</option>
+									{{/each}}
+									{{/if}}
+								</select>
+							
+							{{#if session}}
+							<label>Session</label>
+								<input type="text" name = "session" class="form-control" placeholder="session"  value = "{{session.session}}" readonly/>
+							{{/if}}
+							
+							
+							
+								<small><button class = "btn btn-primary" id = "add-admin" type "submit">SUBMIT</button></small>
+						
+					</form>
+				</div>
+			</div>
+ </div>
+ 
+ </div>
+
+ 
+ </div> 
+ 
+ 
+ 
+ 
+ 
+ 
+ </div>

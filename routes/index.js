@@ -15,8 +15,6 @@ var bcrypt = require('bcryptjs');
 var db = require('../db.js');
 //var getfunc = require('../functions.js');
 
-var ensureLoggedIn = require( 'connect-ensure-login' ).ensureLoggedIn
-
 const saltRounds = bcrypt.genSaltSync(10);
 
 
@@ -169,6 +167,8 @@ router.post('/adduser', authentificationMiddleware(), function(req, res, next) {
 	var phone = req.body.phone;
 	
 	isaRestrictedUser(currentUser)
+});
+
 
 //DELETE USERS
 router.post('/deleteuser', authentificationMiddleware(), function(req, res, next) {
@@ -253,7 +253,7 @@ router.post('/Assign-roles', authentificationMiddleware(), function(req, res, ne
 		}else{
 			db.query('UPDATE all-users SET user_type = ? WHERE full_name = ? ', [role,  fullname],  function(err, results, fields){
 				if (err) throw err;
-				var success = fullname 'is now a ' role;
+				var success = fullname + 'is now a ' + role;
 				req.flash('rolesuccess', success);
 				res.redirect('/admin/#role');
 			});

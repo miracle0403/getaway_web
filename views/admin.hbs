@@ -1,0 +1,622 @@
+ {{> spagenav}}
+ <div id = "content" class="content">
+ <br> <br>
+ {{#if errors}}
+  {{#each errors}}
+  <div class="alert alert-danger">
+    {{this.msg}}
+  </div>
+  {{/each}}
+{{/if}}
+
+ <div class = "row">
+ 
+ 
+ <div class="col-md-4">
+ <div class="card card-user">
+				<div class="card-header">
+					<h5 class="card-title" id = "addresults"> ADD RESULTS </h5>
+					
+				</div>
+				<div class="card-body">
+					<form action = "/addresults" method = "POST">
+						{{#showErrors}}
+						{{#addresultserror}}
+							<div id = "roleserror" class="alert alert-danger">
+								{{.}}
+							</div>
+						{{/addresultserror}}
+						{{/showErrors}}
+						
+						{{#showSuccess}}
+						{{#addresultssuccess}}
+							<div id = "rolessuccess" class="alert alert-success">
+								{{.}}
+							</div>
+						{{/addresultssuccess}}
+						{{/showSuccess}}
+							
+								<label>Session</label>
+								<input type="text" name = "session" class="form-control" placeholder="Session"  required/>
+							
+							
+							
+								<label>Term</label>
+								<select name = "term" class="form-control">
+									
+									<option>1st Term</option>
+									<option>2nd Term</option>
+									<option>3rd Term</option>
+								</select>
+								<label>Available</label>
+								<select name = "available" class="form-control">
+									
+									<option>Yes</option>
+									<option>No</option>
+									
+								</select>
+							
+								<small><button class = "btn btn-primary" id = "add-admin" type "submit">SUBMIT</button></small>
+						>
+					</form>
+				</div>
+			</div>
+ </div>
+ 
+ 
+ <div class="col-md-4">
+ <div class="card card-user">
+				<div class="card-header">
+					<h5 class="card-title" id = "removeresults">REMOVE RESULTS</h5>
+					
+				</div>
+				<div class="card-body">
+					<form action = "/removeresults" method = "POST">
+						{{#showErrors}}
+						{{#removeresultserror}}
+							<div id = "roleserror" class="alert alert-danger">
+								{{.}}
+							</div>
+						{{/removeresultserror}}
+						{{/showErrors}}
+						
+						{{#showSuccess}}
+						{{#removeresultssuccess}}
+							<div id = "rolessuccess" class="alert alert-success">
+								{{.}}
+							</div>
+						{{/removeresultssuccess}}
+						{{/showSuccess}}
+							
+								
+								<label>Session</label>
+								<input type="text" name = "session" class="form-control" placeholder="Session"  required/>
+							
+							<div>
+							
+								<label>Term</label>
+								<select name = "term" class="form-control">
+									
+									<option>1st Term</option>
+									<option>2nd Term</option>
+									<option>3rd Term</option>
+								</select>
+								
+							
+								<small><button class = "btn btn-primary" id = "add-admin" type "submit">SUBMIT</button></small>
+						</div>
+					</form>
+				</div>
+			</div>
+ </div>
+ 
+ 
+ 
+ <div class="col-md-4">
+<div class="card card-user">
+				<div class="card-header">
+					<h5 class="card-title" id = "unban">UNBAN STUDENT</h5>
+					
+				</div>
+				<div class="card-body">
+					<form action = "/unban" method = "POST">
+						{{#showErrors}}
+						{{#unbanerror}}
+							<div id = "roleserror" class="alert alert-danger">
+								{{.}}
+							</div>
+						{{/unbanerror}}
+						{{/showErrors}}
+						
+						{{#showSuccess}}
+						{{#unbansuccess}}
+							<div id = "rolessuccess" class="alert alert-success">
+								{{.}}
+							</div>
+				
+						{{/unbansuccess}}
+						{{/showSuccess}}
+						
+								<label>Full Name</label>
+								<input type="text" name = "fullname" class="form-control" placeholder="Fullname"  required/>
+							<label>Reg ID</label>
+								<input type="text" name = "regid" class="form-control" placeholder="Reg ID"  required/>
+							
+							<div>
+							
+								
+							
+								<small><button class = "btn btn-primary" id = "add-admin" type "submit">SUBMIT</button></small>
+						</div>
+					</form>
+				</div>
+			</div>
+</div>
+ </div>
+ <div class = "row">
+ 
+ 
+ <div class="col-md-4">
+ <div class="card card-user">
+				<div class="card-header">
+					<h5 class="card-title"> ROLES </h5>
+					
+				</div>
+				<div class="card-body">
+					<form action = "/addroles" method = "POST">
+						{{#showErrors}}
+						{{#roleserror}}
+							<div id = "roleserror" class="alert alert-danger">
+								{{.}}
+							</div>
+						{{/roleserror}}
+						{{/showErrors}}
+						
+						{{#showSuccess}}
+						{{#rolessuccess}}
+							<div id = "rolessuccess" class="alert alert-success">
+								{{.}}
+							</div>
+						{{/rolessuccess}}
+						{{/showSuccess}}
+							
+								<label>Full Name</label>
+								<input type="text" name = "fullname" class="form-control" placeholder="Fullname"  required/>
+							
+							<div>
+							
+								<label>Roles</label>
+								<select name = "role" class="form-control">
+									
+									<option>Teacher</option>
+									<option>Administrator</option>
+								</select>
+							
+								<small><button class = "btn btn-primary" id = "add-admin" type "submit">SUBMIT</button></small>
+						</div>
+					</form>
+				</div>
+			</div>
+ </div>
+ 
+ 
+ <div class="col-md-4">
+ <div class="card card-user">
+				<div class="card-header">
+					<h5 class="card-title" id = "deletestudent">DELETE STUDENT</h5>
+					
+				</div>
+				<div class="card-body">
+					<form action = "/deletestudent" method = "POST">
+						{{#showErrors}}
+						{{#delstudent}}
+							<div id = "roleserror" class="alert alert-danger">
+								{{.}}
+							</div>
+						{{/delstudent}}
+						{{/showErrors}}
+						
+						{{#showSuccess}}
+						{{#delsuccess}}
+							<div id = "rolessuccess" class="alert alert-success">
+								{{.}}
+							</div>
+						{{/delsuccess}}
+						{{/showSuccess}}
+							
+								<label>Full Name</label>
+								<input type="text" name = "fullname" class="form-control" placeholder="Fullname"  required/>
+							
+							
+							
+								<label>Reg ID</label>
+								<input type="text" name = "regid" class="form-control" placeholder="regid"  required/>
+							
+							
+								<small><button class = "btn btn-primary" id = "add-admin" type "submit">SUBMIT</button></small>
+						
+					</form>
+				</div>
+			</div>
+ </div>
+ 
+ 
+ 
+ <div class="col-md-4">
+<div class="card card-user">
+				<div class="card-header">
+					<h5 class="card-title" id = "deleteuser">DELETE USER</h5>
+					
+				</div>
+				<div class="card-body">
+					<form action = "/deleteuser" method = "POST">
+						{{#showErrors}}
+						{{#delusererror}}
+							<div id = "roleserror" class="alert alert-danger">
+								{{.}}
+							</div>
+						{{/delusererror}}
+						{{/showErrors}}
+						
+						{{#showSuccess}}
+						{{#delusersuccess}}
+							<div id = "rolessuccess" class="alert alert-success">
+								{{.}}
+							</div>
+						{{/delusersuccess}}
+						{{/showSuccess}}
+							
+								<label>Full Name</label>
+								<input type="text" name = "fullname" class="form-control" placeholder="Fullname"  required/>
+							
+							
+							
+								
+							
+								<small><button class = "btn btn-primary" id = "add-admin" type "submit">SUBMIT</button></small>
+						
+					</form>
+				</div>
+			</div>
+			</div>
+ </div>
+ 
+ <div class = "row">
+ 
+ 
+ <div class="col-md-4">
+ <div class="card card-user">
+				<div class="card-header">
+					<h5 class="card-title" ID = "restrict"> RESTRICT STUDENT </h5>
+					
+				</div>
+				<div class="card-body">
+					<form action = "/restrict" method = "POST">
+						{{#showErrors}}
+						{{#restricterror}}
+							<div id = "roleserror" class="alert alert-danger">
+								{{.}}
+							</div>
+						{{/restricterror}}
+						{{/showErrors}}
+						
+						{{#showSuccess}}
+						{{#restrictsuccess}}
+							<div id = "rolessuccess" class="alert alert-success">
+								{{.}}
+							</div>
+						{{/restrictsuccess}}
+						{{/showSuccess}}
+							
+								<label>Full Name</label>
+								<input type="text" name = "fullname" class="form-control" placeholder="Fullname"  required/>
+							
+							
+							
+								<label>Reg ID</label>
+								<input type="text" name = "regid" class="form-control" placeholder="regid"  required/>
+							
+							
+							
+								<small><button class = "btn btn-primary" id = "add-admin" type "submit">SUBMIT</button></small>
+						
+					</form>
+				</div>
+			</div>
+ </div>
+ 
+ 
+ <div class="col-md-4">
+ <div class="card card-user">
+				<div class="card-header">
+					<h5 class="card-title" ID = "unrestrict"> UNRESTRICT STUDENT </h5>
+					
+				</div>
+				<div class="card-body">
+					<form action = "/unrestrict" method = "POST">
+						{{#showErrors}}
+						{{#unrestricterror}}
+							<div id = "roleserror" class="alert alert-danger">
+								{{.}}
+							</div>
+						{{/unrestricterror}}
+						{{/showErrors}}
+						
+						{{#showSuccess}}
+						{{#unrestrictsuccess}}
+							<div id = "rolessuccess" class="alert alert-success">
+								{{.}}
+							</div>
+						{{/unrestrictsuccess}}
+						{{/showSuccess}}
+							
+								<label>Full Name</label>
+								<input type="text" name = "fullname" class="form-control" placeholder="Fullname"  required/>
+							
+							
+							
+								<label>Reg ID</label>
+								<input type="text" name = "regid" class="form-control" placeholder="regid"  required/>
+							
+							
+							
+								<small><button class = "btn btn-primary" id = "add-admin" type "submit">SUBMIT</button></small>
+						
+					</form>
+				</div>
+			</div>
+ </div>
+ 
+ 
+ 
+ 
+<div class="col-md-4">
+ <div class="card card-user">
+				<div class="card-header">
+					<h5 class="card-title" id = "addremark">PRINCIPAL REMARK</h5>
+					
+				</div>
+				<div class="card-body">
+					<form action = "/addremark" method = "POST">
+						
+						
+						{{#showSuccess}}
+						{{#addremark}}
+							<div id = "rolessuccess" class="alert alert-success">
+								{{.}}
+							</div>
+						{{/addremark}}
+						{{/showSuccess}}
+							
+								
+							
+							
+								<button class = "btn btn-primary" id = "add-admin" type "submit">SUBMIT</button>
+						
+					</form>
+				</div>
+			</div>
+ </div>
+ 
+ 
+ 
+ 
+ 
+ </div>
+ 
+ <div class = "row">
+ 
+ 
+ <div class="col-md-4">
+ <div class="card card-user">
+				<div class="card-header">
+					<h5 class="card-title" id = "classteacher"> ADD CLASS TEACHER </h5>
+					
+				</div>
+				<div class="card-body">
+					<form action = "/addclassteacher" method = "POST">
+						{{#showErrors}}
+						{{#classteachererror}}
+							<div id = "roleserror" class="alert alert-danger">
+								{{.}}
+							</div>
+						{{/classteachererror}}
+						{{/showErrors}}
+						
+						{{#showSuccess}}
+						{{#addclassteachersuccess}}
+							<div id = "rolessuccess" class="alert alert-success">
+								{{.}}
+							</div>
+						{{/addclassteachersuccess}}
+						{{/showSuccess}}
+							
+								<label>Full Name</label>
+								<input type="text" name = "fullname" class="form-control" placeholder="Fullname"  required/>
+							
+							
+							
+								<label>Class</label>
+								<input type="text" name = "theclass" class="form-control" placeholder="Class"  required/>
+							
+							
+							
+								<small><button class = "btn btn-primary" id = "add-admin" type "submit">SUBMIT</button></small>
+						
+					</form>
+				</div>
+			</div>
+ </div>
+ 
+ 
+ <div class="col-md-4">
+ <div class="card card-user">
+				<div class="card-header">
+					<h5 class="card-title" id = "deleteclassteacher"> REMOVE CLASS TEACHER </h5>
+					
+				</div>
+				<div class="card-body">
+					<form action = "/deleteclassteacher" method = "POST">
+						{{#showErrors}}
+						{{#classteachererror}}
+							<div id = "roleserror" class="alert alert-danger">
+								{{.}}
+							</div>
+						{{/classteachererror}}
+						{{/showErrors}}
+						
+						{{#showSuccess}}
+						{{#classteachersuccess}}
+							<div id = "rolessuccess" class="alert alert-success">
+								{{.}}
+							</div>
+						{{/classteachersuccess}}
+						{{/showSuccess}}
+							
+								<label>Full Name</label>
+								<input type="text" name = "fullname" class="form-control" placeholder="Fullname"  required/>
+							
+							
+							
+								<label>Class</label>
+								<input type="text" name = "theclass" class="form-control" placeholder="Class"  required/>
+							
+							
+							
+							
+								<small><button class = "btn btn-primary" id = "add-admin" type "submit">SUBMIT</button></small>
+						
+					</form>
+				</div>
+			</div>
+ </div>
+ 
+ 
+ 
+ 
+ <div class="col-md-4">
+<div class="card card-user">
+				<div class="card-header">
+					<h5 class="card-title" id = "addsubject">ADD SUBJECT</h5>
+					
+				</div>
+				<div class="card-body">
+					<form action = "/addsubject" method = "POST">
+						{{#showErrors}}
+						{{#addsubjecterror}}
+							<div id = "roleserror" class="alert alert-danger">
+								{{.}}
+							</div>
+						{{/addsubjecterror}}
+						{{/showErrors}}
+						
+						{{#showSuccess}}
+						{{#addsubjectsuccess}}
+							<div id = "rolessuccess" class="alert alert-success">
+								{{.}}
+							</div>
+						{{/addsubjectsuccess}}
+						{{/showSuccess}}
+							
+								
+							<label>Subject</label>
+								<input type="text" name = "subject" class="form-control" placeholder="Subject"  required/>
+							
+							
+								<small><button class = "btn btn-primary" id = "add-admin" type "submit">SUBMIT</button></small>
+						
+					</form>
+				</div>
+			</div>
+ </div>
+
+ 
+ </div>
+ 
+ 
+ 
+ 
+ <div class = "row">
+ 
+ 
+ <div class="col-md-4">
+ <div class="card card-user">
+				<div class="card-header">
+					<h5 class="card-title" id = "editremark"> EDIT REMARK </h5>
+					
+				</div>
+				<div class="card-body">
+					<form action = "/editremark" method = "POST">
+						
+						
+						{{#showSuccess}}
+						{{#editremarksuccess}}
+							<div id = "rolessuccess" class="alert alert-success">
+								{{.}}
+							</div>
+						{{/editremarksuccess}}
+						{{/showSuccess}}
+							
+								
+							<input type="text" name = "remark" class="form-control" placeholder="aggregriate 0 to 39.99"  required/>
+							<input type="text" name = "remark" class="form-control" placeholder="aggregriate 40 to 49.99"  required/>
+							<input type="text" name = "remark" class="form-control" placeholder="aggregriate 50 to 59.99"  required/>
+							<input type="text" name = "remark" class="form-control" placeholder="aggregriate 60 to 69.99"  required/>
+							<input type="text" name = "remark" class="form-control" placeholder="aggregriate 70 to 79.99"  required/>
+							<input type="text" name = "remark" class="form-control" placeholder="aggregriate 80 to 89.99"  required/>
+							<input type="text" name = "remark" class="form-control" placeholder="aggregriate 90 to 99.99"  required/>
+							
+							
+							
+								
+								<small><button class = "btn btn-primary" id = "add-admin" type "submit">SUBMIT</button></small>
+						
+					</form>
+				</div>
+			</div>
+ </div>
+ 
+ 
+ 
+ 
+ <div class="col-md-4">
+<div class="card card-user">
+				<div class="card-header">
+					<h5 class="card-title" id = "removesubject">REMOVE SUBJECT</h5>
+					
+				</div>
+				<div class="card-body">
+					<form action = "/removesubject" method = "POST">
+						{{#showErrors}}
+						{{#removesubjecterror}}
+							<div id = "roleserror" class="alert alert-danger">
+								{{.}}
+							</div>
+						{{/removesubjecterror}}
+						{{/showErrors}}
+						
+						{{#showSuccess}}
+						{{#removesubjectsuccess}}
+							<div id = "rolessuccess" class="alert alert-success">
+								{{.}}
+							</div>
+						{{/removesubjectsuccess}}
+						{{/showSuccess}}
+							
+								
+							<label>Subject</label>
+								<input type="text" name = "subject" class="form-control" placeholder="Subject"  required/>
+							
+							
+								<small><button class = "btn btn-primary" id = "add-admin" type "submit">SUBMIT</button></small>
+						
+					</form>
+				</div>
+			</div>
+ </div>
+
+ 
+ </div>
+ 
+ 
+ </div>
