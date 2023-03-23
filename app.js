@@ -20,7 +20,9 @@ var passport = require('passport');
 var localStrategy = require('passport-local'),Strategy;
 var session = require('express-session');
 var MySQLStore = require ('express-mysql-session')(session);
-var flash = require('express-flash-messages');
+//var flash = require('express-flash-messages');
+const  flash  = require('express-flash-messages');
+
 
 var db = require('./db.js');
 
@@ -63,6 +65,17 @@ app.use(session({
   /**cookie:
     #secure: true**/
   }));
+  
+  // setup flash
+/*app.use(
+  flash({
+    sessionKeyName: 'express-flash-message',
+    // below are optional property you can pass in to track
+    onAddFlash: (type, message) => {},
+    onConsumeFlash: (type: string, messages: string[]) => {},
+  })
+);*/
+
 
   //passport
 app.use(passport.initialize());
@@ -85,34 +98,46 @@ app.use('/users', usersRouter);
 
 
 
-passport.use(new localStrategy(function(username, password, done){
-	console.log(username);
- console.log(password);
- const db = require('./db.js');
+passport.use(new localStrategy({
+	usernameField: 'email',
+    passwordField: 'password',
+    session: false
+	},function(username, password, done){
+		console.log(username);
+		console.log(password);
+		const db = require('./db.js');
 
-  db.query('SELECT user_id, password FROM user WHERE username = ?', [username], function (err, results, fields){
-  	if (err) {done(err)};
-  if (results.length === 0){
-  		done(null, false, {
-  			message: 'Invalid Username'
-   });
-  }else {
-  		
-   const hash = results[0].password.toString();
-   bcrypt.compare(password, hash, function(err, response){
-   		if (response === true){
-   			console.log('logged in')
-			console.log(results[0]);
-   			return done(null, {user_id: results[0].user_id});
-		}else{
-			return done(null, false,{
-				message:'Invalid Password'
-       });
-      }
+	db.query('SELECT user_id, password, verification FROM get_away_users WHERE email = ?', [username], function (err, results, fields){
+		if (err) {done(err)};
+		console.log(results)
+		if (results.length === 0){
+			done(null, false, {
+				message: 'This Email does not exist'
+			});
+		}else {
+			const hash = results[0].password.toString();
+			bcrypt.compare(password, hash, function(err, response){
+				if (results[0].verification === 'No'){
+					done(null, false, {
+						message: "Please verify your email."
+					})
+				}else{
+					if (response === true){
+						return done(null, {user_id: results[0].user_id});
+						
+					}else{
+						return done(null, false,{
+							message:'Incorrect  Password'
+						});
+					}
+				}
+			});			
+		}
+      
     });
-   }
- });
+   
 }));
+
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

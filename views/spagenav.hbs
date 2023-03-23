@@ -25,55 +25,76 @@
             </a>
           </li>
 		  <li>
-            <a href="/addposition">
+            <a href="/userprofile">
               <i class="nc-icon nc-bank"></i>
-              <p>Add Position</p>
+              <p>User Profile</p>
             </a>
           </li>
-          
+          {{#if storekeeper}}
          <li>
-              <a href="/editresult">
+              <a href="/stock">
 			  <i class="nc-icon nc-user-run"></i>
-			  Edit Results
+			  All Stock
               </a>
             </li>
-			
-			 <li>
-              <a href="/postresult">
-			  <i class="nc-icon nc-user-run"></i>
-			  Upload New Results
-              </a>
-            </li> 
-			<li>
-              <a href="/all-students-class">
-			  <i class="nc-icon nc-user-run"></i>
-			  My Class
-              </a>
-            </li>
+			{{/if}}
+			 
          
-          
+        {{#if marketer}}
+		  
+			  <li>
+				<a href="/all-Users">
+				  <i class="nc-icon nc-user-run"></i>
+				  <p>All Users</p>
+				</a>
+			  </li>
+		  
+		{{/if}}
+		
+		{{#if accountant}}
+		  
+			  <li>
+				<a href="/all-Users">
+				  <i class="nc-icon nc-user-run"></i>
+				  <p>All Users</p>
+				</a>
+			  </li>
+		  
+		{{/if}}
             
           {{#if admin}}
-          <li>
-            <a href="/all-Users">
-              <i class="nc-icon nc-user-run"></i>
-              <p>All Users</p>
-            </a>
-          </li>
-		   <li>
-            <li>
-            <a href="/all-students">
-              <i class="nc-icon nc-user-run"></i>
-              <p>All Students</p>
-            </a>
-          </li>
-		   <li>
-          <li class="active-pro">
+		   <li class="active-pro">
             <a href="/admin">
               <i class="nc-icon nc-spaceship"></i>
               <p>Admin Panel</p>
             </a>
           </li>
+		  
+		  <li>
+			<a href="/stock">
+			  <i class="nc-icon nc-user-run"></i>
+			  All Stock
+            </a>
+          </li>
+		  
+		   <li>
+            <a href="/all-users">
+              <i class="nc-icon nc-user-run"></i>
+              <p>All Users</p>
+            </a>
+          </li>		  
+		  
+		  <li>
+            <a href="/add-user">
+              <i class="nc-icon nc-user-run"></i>
+              <p>Add Users</p>
+            </a>
+          </li>
+		  
+	
+          
+		   
+         
           {{/if}}
           {{#if isAuthenticated}}
           <li class="active-pro">

@@ -30,16 +30,21 @@
           <div class="row">
             <nav class="footer-nav">
               <ul>
-			  
-            </li>
-               
+				{{#if isAuthenticated}}
+					<li class = "list-item"><a href = "/dashboard">Dashboard</a></li>
+					<li class = "list-item"><a href = "/logout">Log out</a></li>
+				{{else}}
+					<li class = "list-item"><a href = "/register">Register</a></li>
+					<li class = "list-item"><a href = "/login">Log in</a></li>
+					<li class = "list-item"><a href = "/forgotpassword">Forgot Password?</a></li>
+				{{/if}}
                  </ul>
             </nav>
             <div class="credits ml-auto">
               <span class="copyright">
                 © <script>
                   document.write(new Date().getFullYear())
-                </script> Coded by <a href = "http://elzarime.tech">Elzarime</a> 
+                </script> Coded by <a href = "http://wa.me/+2348061179366">Miracle</a> 
               </span>
             </div>
           </div>
