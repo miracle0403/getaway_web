@@ -66,6 +66,23 @@ router.get('/register', function(req, res, next) {
 	}
 });
 
+//get verify mail
+router.get('/verifymail/:email/:code', function(req, res, next) {
+	var email = req.params.email
+	var code = req.params.code
+	
+	db.query('SELECT verification_code FROM get_away_users WHERE username = ?', [email], function ( err, results, fields ){
+		if( err ) throw err;
+		if(results.lenght === 0){
+			res.redirect("/404")
+		}else if (results[0].verification_code !== code){
+			res.redirect("/404")
+		}else{
+			res.render("add-password", {title: "IG NIG LTD", mess: "ADD PASSWORD", email: email})
+		}
+	});
+});
+
 //get login
 router.get('/login', function(req, res, next) {
 	const flashMessages = res.locals.getMessages( );
@@ -183,7 +200,7 @@ router.post('/register', [check('fullname', 'Full Name must be between 8 to 25 c
 			if (results.length === 0){
 				if (cpass == password){
 					bcrypt.hash(password, saltRounds,  function(err, hash){
-						db.query('INSERT INTO get_away_users (user_id, full_name, phone,  email, password, user_type) VALUES (?,?,?,?,?,?)', [ 1, fullname, phone, email, hash, 'Administrator'],  function(err, results, fields){
+						db.query('INSERT INTO get_away_users (user_id, full_name, phone, Username, password, user_type) VALUES (?,?,?,?,?,?)', [ 1, fullname, phone, email, hash, 'Administrator'],  function(err, results, fields){
 							if (err) throw err;
 							var success = 'Registration successful! please login';
 							req.flash('success', success);
@@ -225,11 +242,14 @@ passport.deserializeUser(function(user_id, done){
 });
 
 function authentificationMiddleware(){
-  return (req, res, next) => {
+	return (req, res, next) => {
     console.log(JSON.stringify(req.session.passport));
-  if (req.isAuthenticated()) return next();
-
-  res.redirect('/login'); 
+	if (req.isAuthenticated()){
+		console.log("auth")
+		return next();
+	}else{
+		res.redirect('/login'); 
+	}
   } 
 }
 
@@ -247,6 +267,8 @@ function isaRestrictedUser(user){
 
 //ADD A USER.
 router.post('/add-user', authentificationMiddleware(), [check('fullname', 'Full Name must be between 8 to 25 characters').isLength(8,25),	check('role', 'Role must be between 8 to 15 characters').isLength(8,15),	 check('email', 'Email must be between 8 to 105 characters').isLength(8,105),	check('email', 'Invalid Email').isEmail(),		check('phone', 'Phone Number must be eleven characters').isLength(11)], function(req, res, next) {
+	console.log(req.body)
+	
 	var message = 'ADD USER';
 	var title = "IG NIG. LTD."
 	var currentUser = req.session.passport.user.user_id;
@@ -263,7 +285,7 @@ router.post('/add-user', authentificationMiddleware(), [check('fullname', 'Full 
 			res.redirect('/403');
 		}else{
 			if (errors.length > 0){
-				res.render('admin', { mess: 'OPERATION FAILED', errors: errors,  email: email, phone: phone,  fullname: fullname });
+				res.render('admin', { mess: 'OPERATION FAILED', errors: errors,  email: username, phone: phone,  fullname: fullname });
 			}else{
 				db.query('SELECT user_id FROM get_away_users WHERE phone = ?', [phone], function(err, results, fields){
 					if( err ) throw err;
@@ -272,25 +294,28 @@ router.post('/add-user', authentificationMiddleware(), [check('fullname', 'Full 
 						req.flash('addusererror', error);
 						res.redirect('/admin#adduser');
 					}else{
-						db.query('SELECT user_id FROM get_away_users WHERE email = ?', [email], function(err, results, fields){
+						db.query('SELECT user_id, username FROM get_away_users WHERE username = ?', [email], function(err, results, fields){
 							if( err ) throw err;
+							
 							if(results.length > 0){
 								var error = "Email is in use already!"
 								req.flash('addusererror', error);
 								res.redirect('/admin#adduser');
 							}else{
 								securePin.generatePin(7, function(pin){
-									db.query('INSERT INTO get_away_users (full_name, phone,  email, user_type, verification_code) VALUES (?,?,?,?,?)', [ fullname, phone, email, role, pin],  function(err, results, fields){
-										if (err) {
+									db.query('INSERT INTO get_away_users (username, full_name, phone, user_type, verification_code) VALUES (?,?,?,?,?)', [ email, fullname, phone, role, pin],  function(err, results, fields){
+										if (err) throw err; /*{
 											var error = "Something went wrong in your entry. Please contact the Administrator(s). You can try changing the Name field first."
+											console.log(error)
 											req.flash('addusererror', error);
 											res.redirect("/admin#adduser")
-										}else{
+										}else{*/
 											var success = 'User has been Added. Please inform user to create a password';
 											console.log(success)
 											req.flash('addusersuccess', success);
 											res.redirect('/admin#adduser');
-										}
+										//}
+										
 									});
 								});
 							}

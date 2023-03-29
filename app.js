@@ -98,16 +98,12 @@ app.use('/users', usersRouter);
 
 
 
-passport.use(new localStrategy({
-	usernameField: 'email',
-    passwordField: 'password',
-    session: false
-	},function(username, password, done){
+passport.use(new localStrategy(function(username, password, done){
 		console.log(username);
 		console.log(password);
 		const db = require('./db.js');
 
-	db.query('SELECT user_id, password, verification FROM get_away_users WHERE email = ?', [username], function (err, results, fields){
+	db.query('SELECT user_id, password, verification FROM get_away_users WHERE Username = ?', [username], function (err, results, fields){
 		if (err) {done(err)};
 		console.log(results)
 		if (results.length === 0){
