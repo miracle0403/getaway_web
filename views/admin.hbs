@@ -1,79 +1,165 @@
  {{> spagenav}}
-	<div class="content">
-		<br> <br>
-		{{#if errors}}
-			{{#each errors}}
-				<div class="alert alert-danger">
-					{{this.msg}}
-				</div>
-			{{/each}}
-		{{/if}}
-		
-		<div class = "row">
-		
-			<div class="col-md-4">
-				<div class="card card-user">
-					<div class="card-header">
-						<h5 class="card-title" id = "adduser"> ADD USER </h5>
-					</div>
+ 
+ <div class = "content">
+ <br> <br>
+ {{#if errors}}
+  {{#each errors}}
+  <div class="alert alert-danger">
+    {{this.msg}}
+  </div>
+  {{/each}}
+{{/if}}
+ <div class = "row">
+ 
+ 
+ <div class="col-md-4">
+ <div class="card card-user">
+				<div class="card-header">
+					<h5 class="card-title" id = "adduser"> ADD NEW USER </h5>
 					
-					<div class="card-body">
-						<form action = "/add-user" method = "POST">
-							{{#showErrors}}
-							{{#addresultserror}}
-								<div id = "roleserror" class="alert alert-danger">
-									{{.}}
-								</div>
-							{{/addresultserror}}
-							{{/showErrors}}
-							
-							{{#showSuccess}}
-							{{#addresultssuccess}}
-								<div id = "rolessuccess" class="alert alert-success">
-									{{.}}
-								</div>
-							{{/addresultssuccess}}
-							{{/showSuccess}}
-							
+				</div>
+				<div class="card-body">
+					<form action = "/add-user" method = "POST">
+						{{#showErrors}}
+						{{#addusererror}}
+							<div id = "addusererror" class="alert alert-danger">
+								{{.}}
+							</div>
+						{{/addusererror}}
+						{{/showErrors}}
+						
+						{{#showSuccess}}
+						{{#addusersuccess}}
+							<div id = "addusersuccess" class="alert alert-success">
+								{{.}}
+							</div>
+						{{/addusersuccess}}
+						{{/showSuccess}}
 							
 								<label>Full Name</label>
 								<input type="text" name = "fullname" class="form-control" placeholder="Enter Full Name"  required/>
-						
-													
+								
 								<label>Email</label>
 								<input type="email" name = "email" class="form-control" placeholder="Enter Email"  required/>
 							
 							
-							
-								<label>Phone</label>
-								<input type="tel" name = "phone" class="form-control" placeholder="Enter Phone number"  required/>
-						
-						
-							
-								<label>Role</label>
-									<select class = "form-control" name = "role>
-										<option></option>
-										<option>Administrator</option>
+								<label>Phone Number</label>
+								<input type="tel" name = "phone" class="form-control" placeholder="Enter Phone"  />
+								
+							<label>Role</label>
+								<select name = "role" class="form-control">
+									
+									<option></option>
+									<option>Administrator</option>
 										<option>Accountant</option>
 										<option>Marketer</option>
 										<option>Store Keeper</option>
-									</select>
-							
-						
-							
+									
+								</select>
 								<small><button class = "btn btn-primary" id = "add-admin" type "submit">SUBMIT</button></small>
-							
-						</form>
-					</div>
-					
+						
+					</form>
 				</div>
 			</div>
-			
-			
-			
-			
-			
-			
-		</div>
-		
-	</div>
+ </div>
+ 
+ 
+<div class="col-md-4">
+ <div class="card card-user">
+				<div class="card-header">
+					<h5 class="card-title" ID = "deletestudent"> DELETE STUDENT </h5>
+					
+				</div>
+				<div class="card-body">
+					<form action = "/deletestudent" method = "POST">
+						{{#showErrors}}
+						{{#delstudent}}
+							<div id = "roleserror" class="alert alert-danger">
+								{{.}}
+							</div>
+						{{/delstudent}}
+						{{/showErrors}}
+						
+						{{#showSuccess}}
+						{{#delsuccess}}
+							<div id = "rolessuccess" class="alert alert-success">
+								{{.}}
+							</div>
+						{{/delsuccess}}
+						{{/showSuccess}}
+							
+								<label>Full Name</label>
+								<input type="text" name = "fullname" class="form-control" placeholder="Fullname"  required/>
+							
+							
+								<label>Reg ID</label>
+								<input type="text" name = "regid" class="form-control" placeholder="regid"  />
+							
+							
+							
+								<small><button class = "btn btn-primary" id = "add-admin" type "submit">SUBMIT</button></small>
+						
+					</form>
+				</div>
+			</div>
+ </div>
+ 
+ 
+ 
+ 
+ 
+ <div class="col-md-4">
+ <div class="card card-user">
+				<div class="card-header">
+					<h5 class="card-title" ID = "transferstudent"> TRANSFER STUDENT </h5>
+					
+				</div>
+				<div class="card-body">
+					<form action = "/transferstudent" method = "POST">
+						{{#showErrors}}
+						{{#transferstudenterror}}
+							<div id = "roleserror" class="alert alert-danger">
+								{{.}}
+							</div>
+						{{/transferstudenterror}}
+						{{/showErrors}}
+						
+						{{#showSuccess}}
+						{{#transferstudentsuccess}}
+							<div id = "rolessuccess" class="alert alert-success">
+								{{.}}
+							</div>
+						{{/transferstudentsuccess}}
+						{{/showSuccess}}
+							
+								<label>Full Name</label>
+								<input type="text" name = "fullname" class="form-control" placeholder="Fullname"  required/>
+							
+							
+								<label>Reg ID</label>
+								<input type="text" name = "regid" class="form-control" placeholder="regid"  required/>
+							
+							
+							
+							
+							
+							
+							
+								<small><button class = "btn btn-primary" id = "add-admin" type "submit">SUBMIT</button></small>
+						
+					</form>
+				</div>
+			</div>
+ </div>
+ 
+ </div>
+
+ 
+ </div> 
+ 
+ 
+ 
+ 
+ 
+ 
+ </div>

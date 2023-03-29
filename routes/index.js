@@ -113,7 +113,7 @@ router.get('/stock', authentificationMiddleware(), function(req, res, next) {
 
 /* ADMIN GET REQUEST SECTION. */
 
-//add users
+/*add users
 router.get('/add-user', authentificationMiddleware(), function(req, res, next) {
 	var message = 'ADD USER';
 	var title = "IG NIG. LTD."
@@ -130,7 +130,7 @@ router.get('/add-user', authentificationMiddleware(), function(req, res, next) {
 			});
 		}
 	});
-});
+});*/
 	
 
 
@@ -234,7 +234,7 @@ function authentificationMiddleware(){
 }
 
 function isaRestrictedUser(user){
-	db.query('SELECT user_status FROM all-users WHERE full_name = ? ', [user], function ( err, results, fields ){
+	db.query('SELECT user_status FROM get_away_users WHERE user_id = ? ', [user], function ( err, results, fields ){
 		if( err ) throw err;
 		if (results[0].user_status === "Restricted"){
 			res.redirect("/login")
@@ -269,22 +269,28 @@ router.post('/add-user', authentificationMiddleware(), [check('fullname', 'Full 
 					if( err ) throw err;
 					if(results.length > 0){
 						var error = "Phone number is in use already!"
-						req.flash('error', error);
-						res.redirect('/add-user');
+						req.flash('addusererror', error);
+						res.redirect('/admin#adduser');
 					}else{
 						db.query('SELECT user_id FROM get_away_users WHERE email = ?', [email], function(err, results, fields){
 							if( err ) throw err;
 							if(results.length > 0){
 								var error = "Email is in use already!"
-								req.flash('error', error);
-								res.redirect('/add-user');
+								req.flash('addusererror', error);
+								res.redirect('/admin#adduser');
 							}else{
 								securePin.generatePin(7, function(pin){
 									db.query('INSERT INTO get_away_users (full_name, phone,  email, user_type, verification_code) VALUES (?,?,?,?,?)', [ fullname, phone, email, role, pin],  function(err, results, fields){
-										if (err) throw err;
-										var success = 'User has been Added. Please inform user to create a password';
-										req.flash('success', success);
-										res.redirect('/add-user');
+										if (err) {
+											var error = "Something went wrong in your entry. Please contact the Administrator(s). You can try changing the Name field first."
+											req.flash('addusererror', error);
+											res.redirect("/admin#adduser")
+										}else{
+											var success = 'User has been Added. Please inform user to create a password';
+											console.log(success)
+											req.flash('addusersuccess', success);
+											res.redirect('/admin#adduser');
+										}
 									});
 								});
 							}
@@ -463,16 +469,38 @@ router.get('/dashboard', authentificationMiddleware(), function(req, res, next) 
 
 //admin dashboard
 router.get('/admin', authentificationMiddleware(), function(req, res, next) {
+	var title = "IG NIG LTD"
+	var message = "ADMIN DASHBOARD"
 	var currentUser = req.session.passport.user.user_id;
 	db.query('SELECT full_name, user_type FROM get_away_users WHERE user_id = ? ', [currentUser], function ( err, results, fields ){
 		if( err ) throw err;
 		if (results[0].user_type !== "Administrator"){
 			res.redirect("/403")
 		}else{
-			res.render('admin', { 
-				title: 'IG NIG LTD', 
-				mess: 'ADMIN DASHBOARD', 
+			var flashMessages = res.locals.getMessages( );
+			if( flashMessages.addusererror ){
+				res.render( 'admin', {
+					showErrors: true,
+					addusererror: flashMessages.addusererror,
+					title: title,
+					mess: message,
+					admin: "is admin"
+				});
+			}else if ( flashMessages.addusersuccess ){
+				res.render( 'admin', {
+					showSuccess: true,
+					addusersuccess: flashMessages.addusersuccess,
+					title: title,
+					mess: message,
+					admin: "is admin"
+				});
+			}else{
+				res.render('admin', { 
+				title: title, 
+				mess: message, 
 				admin: "is admin" });
+			}
+			
 		}
 	});
 });
@@ -489,5 +517,27 @@ router.get('*', function(req, res, next) {
 router.get('/403', function(req, res, next) {
   res.render('403',{title: 'IG NIGERIA', mess: 'You are not permitted to veiw this page. Please conact your Adminstrator.'});
 });
+
+//error wrong
+router.get('/wrong', function(req, res, next) {
+	var title = "IG NIG LTD"
+	var message = 'Something Went Wrong!. Please conact your Adminstrator.'
+	const flashMessages = res.locals.getMessages( );
+	
+	if( flashMessages.error ){
+		res.render( 'wrong', {
+			showErrors: true,
+			error: flashMessages.error,
+			title: title,
+			mess: message
+		});
+	}else{
+		res.render( 'wrong', {
+			title: title,
+			mess: message
+		});
+	}
+});
+
 
 module.exports = router;
