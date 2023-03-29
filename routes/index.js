@@ -74,8 +74,10 @@ router.get('/verifymail/:email/:code', function(req, res, next) {
 	db.query('SELECT verification_code FROM get_away_users WHERE username = ?', [email], function ( err, results, fields ){
 		if( err ) throw err;
 		if(results.lenght === 0){
+			console.log("no email")
 			res.redirect("/404")
-		}else if (results[0].verification_code !== code){
+		}else if (results[0].verification_code != code){
+			console.log("no code")
 			res.redirect("/404")
 		}else{
 			res.render("add-password", {title: "IG NIG LTD", mess: "ADD PASSWORD", email: email})
@@ -179,6 +181,34 @@ router.get('/request-product', authentificationMiddleware(), function(req, res, 
 
 /*post requests*/
 
+//add password
+router.post('/add-password', [	check('password', 'Password must be between 8 to 15 characters').isLength(8,15),	 check('username', 'Email must be between 8 to 105 characters').isLength(8,105),	check('username', 'Invalid Email').isEmail()], function (req, res, next) {	 
+	var password = req.body.password;
+    var cpassword = req.body.cpassword;
+	var email = req.body.username;
+	console.log(req.body)
+	var errors = validationResult(req).errors;
+	
+	if (errors.length > 0){
+		res.render('add-password', { mess: 'ADD PASSWORD FAILED', errors: errors,  email: email,  password: password, cpassword: cpassword });
+	}else{
+		if (cpassword == password){
+			bcrypt.hash(password, saltRounds,  function(err, hash){
+				db.query("UPDATE get_away_users SET password = ?, verification = ?  WHERE username = ?", [hash, "Yes", email], function(err, results, fields){
+					if (err) throw err;
+					var success = 'Password Updated Successfully! please login';
+					console.log(success)
+					req.flash('success', success);
+					res.redirect('/login');
+				});
+			});
+		}else{
+			var error = "Password does not match"
+			console.log(error)
+			res.render('add-password', { mess: 'ADD PASSWORD', errors: errors,  email: email, error: error,  password: password, cpassword: cpassword });
+		}
+	}
+});
 
 //post register
 router.post('/register', [check('fullname', 'Full Name must be between 8 to 25 characters').isLength(8,25),	check('password', 'Password must be between 8 to 15 characters').isLength(8,15),	 check('email', 'Email must be between 8 to 105 characters').isLength(8,105),	check('email', 'Invalid Email').isEmail(),		check('phone', 'Phone Number must be eleven characters').isLength(11)], function (req, res, next) {	 
@@ -476,10 +506,7 @@ router.get('/dashboard', authentificationMiddleware(), function(req, res, next) 
 			//series of command to execute
 			
 		}else if (results[0].user_type === "Administrator") {
-			res.render('dashboard', { 
-				title: 'IG NIG LTD', 
-				mess: 'USER DASHBOARD', 
-				admin: "is admin" });
+			res.redirect("/admin")
 		}else if (results[0].user_type === "Marketer"){
 			//series of command to execute
 			
