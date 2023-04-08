@@ -307,13 +307,14 @@ router.post('/add-user', authentificationMiddleware(), [check('fullname', 'Full 
     var role = req.body.role;
     var phone = req.body.phone;
 	
-	var errors = validationResult(req).errors;
 	isaRestrictedUser(currentUser)
 	db.query('SELECT * FROM get_away_users WHERE user_id = ?', [currentUser], function ( err, results, fields ){
 		if( err ) throw err;
 		if(results[0].user_type !== 'Administrator'){
 			res.redirect('/403');
 		}else{
+			var errors = validationResult(req).errors;
+	
 			if (errors.length > 0){
 				res.render('admin', { mess: 'OPERATION FAILED', errors: errors,  email: username, phone: phone,  fullname: fullname });
 			}else{
@@ -401,6 +402,50 @@ router.post('/addproduct', authentificationMiddleware(), function(req, res, next
 });
 
 
+//change roles
+//DELETE USERS
+router.post('/changeroles', authentificationMiddleware(),  [check('name', 'Full Name must be between 8 to 25 characters').isLength(8,25), check('role', 'New Role must be between 8 to 25 characters').isLength(8,25)],	 function(req, res, next) {
+	var currentUser = req.session.passport.user.user_id;
+	var fullname = req.body.fullname;
+	isaRestrictedUser(currentUser)
+	
+	var name = req.body.name;
+	var role = req.body.role;
+	
+	db.query('SELECT full_name FROM get_away_users', function ( err, results, fields ){
+		if( err ) throw err;
+		var names = results;
+	
+		var errors = validationResult(req).errors;
+		
+		if (errors.length > 0){
+			res.render('admin', { admin: "Yes", mess: 'OPERATION FAILED', names:names, errors: errors,  name: name, role: role, changeroleserror: "Yes"});
+		}else{
+			db.query('SELECT full_name, user_type FROM get_away_users WHERE full_name = ?', [name], function ( err, results, fields ){
+				if( err ) throw err;
+				var selected_user = results[0];
+				
+				if(selected_user.user_type == role){
+					console.log(error)
+					var error = name + " is already a " + role
+					req.flash('changeroleserror', error);
+					res.redirect('/admin#changeroles');
+				}else{
+					db.query('UPDATE get_away_users SET user_type = ? WHERE full_name = ? ', [role,  name],  function(err, results, fields){
+						if (err) throw err;
+						var success = name + " is now a " + role
+						console.log(success)
+						req.flash('changerolessuccess', success);
+						res.redirect('/admin/#changerolesuser');	
+					});			
+				}
+			});		
+		}
+	});	
+});	
+
+
+
 
 //DELETE USERS
 router.post('/deleteuser', authentificationMiddleware(), function(req, res, next) {
@@ -470,29 +515,6 @@ router.post('/unrestrictsuser', authentificationMiddleware(), function(req, res,
 	});
 });
 
-//Assign Roles
-router.post('/Assign-roles', authentificationMiddleware(), function(req, res, next) {
-	var currentUser = req.session.passport.user.user_id;
-	var fullname = req.body.fullname;
-	var role = req.body.role;
-	isaRestrictedUser(currentUser)
-	db.query('SELECT * FROM user WHERE full_name = ? ', [fullname], function ( err, results, fields ){
-		if( err ) throw err;
-		if(results.length === 0){
-			var error = 'User does not exist';
-			req.flash('restrictusererror', error);
-			res.redirect('/admin/#restrictuser');
-		}else{
-			db.query('UPDATE all-users SET user_type = ? WHERE full_name = ? ', [role,  fullname],  function(err, results, fields){
-				if (err) throw err;
-				var success = fullname + 'is now a ' + role;
-				req.flash('rolesuccess', success);
-				res.redirect('/admin/#role');
-			});
-		}
-	});
-});
-
 
 /* DASHBOARDS*/
 
@@ -529,30 +551,54 @@ router.get('/admin', authentificationMiddleware(), function(req, res, next) {
 		if (results[0].user_type !== "Administrator"){
 			res.redirect("/403")
 		}else{
-			var flashMessages = res.locals.getMessages( );
-			if( flashMessages.addusererror ){
-				res.render( 'admin', {
-					showErrors: true,
-					addusererror: flashMessages.addusererror,
-					title: title,
-					mess: message,
-					admin: "is admin"
-				});
-			}else if ( flashMessages.addusersuccess ){
-				res.render( 'admin', {
-					showSuccess: true,
-					addusersuccess: flashMessages.addusersuccess,
-					title: title,
-					mess: message,
-					admin: "is admin"
-				});
-			}else{
-				res.render('admin', { 
-				title: title, 
-				mess: message, 
-				admin: "is admin" });
-			}
-			
+			db.query('SELECT full_name, user_type FROM get_away_users',  function ( err, results, fields ){
+				if( err ) throw err;
+				var users = results;
+				var flashMessages = res.locals.getMessages( );
+				if( flashMessages.addusererror ){
+					res.render( 'admin', {
+						showErrors: true,
+						addusererror: flashMessages.addusererror,
+						title: title,
+						users: users,
+						mess: message,
+						admin: "is admin"
+					});
+				}else if ( flashMessages.addusersuccess ){
+					res.render( 'admin', {
+						showSuccess: true,
+						addusersuccess: flashMessages.addusersuccess,
+						title: title,
+						users: users,
+						mess: message,
+						admin: "is admin"
+					});
+				}else if( flashMessages.changeroleserror ){
+					res.render( 'admin', {
+						showErrors: true,
+						changeroleserror: flashMessages.changeroleserror,
+						title: title,
+						users: users,
+						mess: message,
+						admin: "is admin"
+					});
+				}else if ( flashMessages.changerolessuccess ){
+					res.render( 'admin', {
+						showSuccess: true,
+						changerolessuccess: flashMessages.changerolessuccess,
+						title: title,
+						users: users,
+						mess: message,
+						admin: "is admin"
+					});
+				}else{
+					res.render('admin', { 
+					title: title, 
+					users: users,
+					mess: message, 
+					admin: "is admin" });
+				}
+			});				
 		}
 	});
 });

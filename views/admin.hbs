@@ -62,6 +62,7 @@
 				</div>
 			</div>
  </div>
+
  
  
 <div class="col-md-4">
@@ -71,33 +72,47 @@
 					
 				</div>
 				<div class="card-body">
-					<form action = "/deletestudent" method = "POST">
+					<form action = "/deleteuser" method = "POST">
 						{{#showErrors}}
-						{{#delstudent}}
-							<div id = "roleserror" class="alert alert-danger">
+						{{#deleteusererror}}
+							<div id = "deleteuser" class="alert alert-danger">
 								{{.}}
 							</div>
-						{{/delstudent}}
+						{{/deleteusererror}}
 						{{/showErrors}}
 						
 						{{#showSuccess}}
-						{{#delsuccess}}
-							<div id = "rolessuccess" class="alert alert-success">
+						{{#deleteusersuccess}}
+							<div id = "deleteuser" class="alert alert-success">
 								{{.}}
 							</div>
-						{{/delsuccess}}
+						{{/deleteusersuccess}}
 						{{/showSuccess}}
 							
 								<label>Full Name</label>
-								<input type="text" name = "fullname" class="form-control" placeholder="Fullname"  required/>
+								<select name = "name" class="form-control">
+									{{#if deleteuserror}}
+										{{#if names}}
+										{{#each names}}
+											<option></option>
+											<option>{{full_name}}</option>
+										{{/each}}
+										{{/if}}
+									{{else}}									
+										<option></option>
+									{{#if users}}
+									{{#each users}}
+										<option>{{full_name}}</option>
+									{{/each}}	
+									{{/if}}
+									{{/if}}
+									
+								</select>
 							
 							
-								<label>Reg ID</label>
-								<input type="text" name = "regid" class="form-control" placeholder="regid"  />
+															
 							
-							
-							
-								<small><button class = "btn btn-primary" id = "add-admin" type "submit">SUBMIT</button></small>
+								<small><button class = "btn btn-primary" id = "remove-admin" type "submit">SUBMIT</button></small>
 						
 					</form>
 				</div>
@@ -106,38 +121,61 @@
  
  
  
- 
- 
- <div class="col-md-4">
+<div class="col-md-4">
  <div class="card card-user">
 				<div class="card-header">
-					<h5 class="card-title" ID = "transferstudent"> CHANGE ROLES </h5>
+					<h5 class="card-title" ID = "changeroles"> CHANGE ROLES </h5>
 					
 				</div>
 				<div class="card-body">
-					<form action = "/transferstudent" method = "POST">
+					<form action = "/changeroles" method = "POST">
 						{{#showErrors}}
-						{{#transferstudenterror}}
+						{{#changeroleserror}}
 							<div id = "roleserror" class="alert alert-danger">
 								{{.}}
 							</div>
-						{{/transferstudenterror}}
+						{{/changeroleserror}}
 						{{/showErrors}}
 						
 						{{#showSuccess}}
-						{{#transferstudentsuccess}}
+						{{#changerolessuccess}}
 							<div id = "rolessuccess" class="alert alert-success">
 								{{.}}
 							</div>
-						{{/transferstudentsuccess}}
+						{{/changerolessuccess}}
 						{{/showSuccess}}
 							
-								<label>Full Name</label>
-								<input type="text" name = "fullname" class="form-control" placeholder="Fullname"  required/>
+							<label>Full Name</label>
+								<select name = "name" class="form-control">
+									{{#if changeroleserror}}
+										{{#if names}}
+										{{#each names}}
+											<option></option>
+											<option>{{full_name}}</option>
+										{{/each}}
+										{{/if}}
+									{{else}}									
+										<option></option>
+									{{#if users}}
+									{{#each users}}
+										<option>{{full_name}}</option>
+									{{/each}}	
+									{{/if}}
+									{{/if}}
+									
+								</select>
 							
 							
-								<label>Reg ID</label>
-								<input type="text" name = "regid" class="form-control" placeholder="regid"  required/>
+								<label>New Role</label>
+								<select name = "role" class="form-control">
+									
+									<option></option>
+									<option>Administrator</option>
+										<option>Accountant</option>
+										<option>Marketer</option>
+										<option>Store Keeper</option>
+									
+								</select>
 							
 							
 							
@@ -153,7 +191,9 @@
  </div>
  
  </div>
-
+ 
+ 
+ 
  
  </div> 
  
