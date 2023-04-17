@@ -451,6 +451,15 @@ router.post('/changeroles', authentificationMiddleware(),  [check('name', 'Full 
 router.post('/deleteuser', authentificationMiddleware(), function(req, res, next) {
 	var currentUser = req.session.passport.user.user_id;
 	var fullname = req.body.fullname;
+	db.query('DELETE FROM get_away_users WHERE full_name = ? ', [  fullname],  function(err, results, fields){
+		if (err) throw err;
+	});
+});
+
+
+/*router.post('/deleteuser', authentificationMiddleware(), function(req, res, next) {
+	var currentUser = req.session.passport.user.user_id;
+	var fullname = req.body.fullname;
 	isaRestrictedUser(currentUser)
 	db.query('SELECT * FROM user WHERE full_name = ? ', [fullname], function ( err, results, fields ){
 		if( err ) throw err;
@@ -467,7 +476,7 @@ router.post('/deleteuser', authentificationMiddleware(), function(req, res, next
 			});
 		}
 	});
-});
+});*/
 	
 
 //RESTRICT USERS (ON SUSPENSION)

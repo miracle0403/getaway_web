@@ -80,7 +80,9 @@
 							</div>
 						{{/deleteusererror}}
 						{{/showErrors}}
-						
+							<div id = "deleteusererrorajax" class="alert alert-danger">
+								<p id = "ajaxerror"></>
+							</div>
 						{{#showSuccess}}
 						{{#deleteusersuccess}}
 							<div id = "deleteuser" class="alert alert-success">
@@ -90,7 +92,7 @@
 						{{/showSuccess}}
 							
 								<label>Full Name</label>
-								<select name = "name" class="form-control">
+								<select name = "name" id = "name" class="form-control">
 									{{#if deleteuserror}}
 										{{#if names}}
 										{{#each names}}
@@ -112,7 +114,7 @@
 							
 															
 							
-								<small><button class = "btn btn-primary" id = "remove-admin" type "submit">SUBMIT</button></small>
+								<small><button class = "btn btn-primary" id = "removeUser" type "submit">SUBMIT</button></small>
 						
 					</form>
 				</div>
