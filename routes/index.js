@@ -316,7 +316,7 @@ router.post('/add-user', authentificationMiddleware(), [check('fullname', 'Full 
 			var errors = validationResult(req).errors;
 	
 			if (errors.length > 0){
-				res.render('admin', { mess: 'OPERATION FAILED', errors: errors,  email: username, phone: phone,  fullname: fullname });
+				res.render('admin', { mess: 'OPERATION FAILED', errors: errors,  email: email, phone: phone,  fullname: fullname });
 			}else{
 				db.query('SELECT user_id FROM get_away_users WHERE phone = ?', [phone], function(err, results, fields){
 					if( err ) throw err;
@@ -448,11 +448,14 @@ router.post('/changeroles', authentificationMiddleware(),  [check('name', 'Full 
 
 
 //DELETE USERS
-router.post('/deleteuser', authentificationMiddleware(), function(req, res, next) {
+router.post('/deleteuser', authentificationMiddleware(),  function(req, res, next) {
 	var currentUser = req.session.passport.user.user_id;
-	var fullname = req.body.fullname;
-	db.query('DELETE FROM get_away_users WHERE full_name = ? ', [  fullname],  function(err, results, fields){
+	var name = req.body.name;
+	db.query('DELETE FROM get_away_users WHERE full_name = ? ', [name],  function(err, results, fields){
 		if (err) throw err;
+		var success = "User deleted successfully!"
+		req.flash("deleteusersuccessajax", success)
+		res.redirect("/admin")
 	});
 });
 
@@ -577,6 +580,15 @@ router.get('/admin', authentificationMiddleware(), function(req, res, next) {
 					res.render( 'admin', {
 						showSuccess: true,
 						addusersuccess: flashMessages.addusersuccess,
+						title: title,
+						users: users,
+						mess: message,
+						admin: "is admin"
+					});
+				}else if ( flashMessages.deleteusersuccessajax ){
+					res.render( 'admin', {
+						showSuccess: true,
+						deleteusersuccessajax: flashMessages.deleteusersuccessajax,
 						title: title,
 						users: users,
 						mess: message,

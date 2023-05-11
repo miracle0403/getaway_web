@@ -83,12 +83,21 @@
 							<div id = "deleteusererrorajax" class="alert alert-danger">
 								<p id = "ajaxerror"></>
 							</div>
+							
 						{{#showSuccess}}
 						{{#deleteusersuccess}}
 							<div id = "deleteuser" class="alert alert-success">
 								{{.}}
 							</div>
 						{{/deleteusersuccess}}
+						{{/showSuccess}}
+						
+						{{#showSuccess}}
+						{{#deleteusersuccessajax}}
+							<div id = "deleteuser" class="alert alert-success">
+								{{.}}
+							</div>
+						{{/deleteusersuccessajax}}
 						{{/showSuccess}}
 							
 								<label>Full Name</label>
@@ -114,7 +123,7 @@
 							
 															
 							
-								<small><button class = "btn btn-primary" id = "removeUser" type "submit">SUBMIT</button></small>
+								<small><button class = "btn btn-primary" id = "removeUser" type "button">SUBMIT</button></small>
 						
 					</form>
 				</div>
